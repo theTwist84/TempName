@@ -14,11 +14,9 @@ namespace TempName
         {
             var IniFile = new IniFile.IniFile(Settings.IniFile);
 
-            switch (Setting)
-            {
+            switch (Setting) {
                 case "TimeOut":
-                    if (!IniFile.KeyExists(Setting, "Settings"))
-                    {
+                    if (!IniFile.KeyExists(Setting, "Settings")) {
                         IniFile.Write(Setting, "20", "Settings");
                         return IniFile.Read(Setting, "Settings");
                     }
@@ -29,8 +27,7 @@ namespace TempName
                 case "LogEnabled":
                 case "LookForServerEnabled":
                 //case "LookForPlayerEnabled":
-                    if (!IniFile.KeyExists(Setting, "Settings"))
-                    {
+                    if (!IniFile.KeyExists(Setting, "Settings")) {
                         IniFile.Write(Setting, "false", "Settings");
                         return IniFile.Read(Setting, "Settings");
                     }
@@ -41,8 +38,7 @@ namespace TempName
                 //case "PlayerName":
                 //case "PlayerUID":
                 case "LogName":
-                    if (!IniFile.KeyExists(Setting, "Settings"))
-                    {
+                    if (!IniFile.KeyExists(Setting, "Settings")) {
                         if (Setting.Equals("ServerName"))
                             IniFile.Write(Setting, "G-Money", "Settings");
                         /*else if (Setting.Equals("PlayerName"))
@@ -88,7 +84,7 @@ namespace TempName
         public static string Playeruid { get; } = GetSetting("PlayerUID");*/
 
 
-        public static string MasterServer { get; set; } = Helpers.GetMasterServer();
+        public static string MasterServer { get; set; } = Helpers.GetMasterServer().ToString();
 
         public static dynamic ServerList = JsonConvert.DeserializeObject(wc.DownloadString(MasterServer));
     }

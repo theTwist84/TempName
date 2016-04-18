@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿/* All credit goes to Danny Beckett http://stackoverflow.com/u/1563422
+ * He wrote this code http://stackoverflow.com/a/14906422
+ */
+
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
