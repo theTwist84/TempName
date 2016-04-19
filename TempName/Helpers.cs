@@ -60,7 +60,6 @@ namespace TempName
             Settings.TimeOut = Int32.Parse(Settings.GetSetting("TimeOut"));
             Settings.IsUsingName_Server = Boolean.Parse(Settings.GetSetting("LookForServerEnabled"));
             Settings.ServerName = Settings.GetSetting("ServerName");
-            Settings.IsPassworded = false;
         }
 
         /*public static string FindPlayerByName(string NameToFind, string playerToSearch) {

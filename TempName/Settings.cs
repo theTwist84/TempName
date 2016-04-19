@@ -26,7 +26,7 @@ namespace TempName
                 case "IsDEBUG":
                 case "LogEnabled":
                 case "LookForServerEnabled":
-                //case "LookForPlayerEnabled":
+                    //case "LookForPlayerEnabled":
                     if (!IniFile.KeyExists(Setting, "Settings")) {
                         IniFile.Write(Setting, "false", "Settings");
                         return IniFile.Read(Setting, "Settings");
@@ -67,9 +67,6 @@ namespace TempName
 
 
         public static int TimeOut { get; set; } = Int32.Parse(GetSetting("TimeOut"));
-        
-
-        public static bool IsPassworded { get; set; } = false;
 
 
         public static bool IsUsingName_Server { get; set; } = Boolean.Parse(GetSetting("LookForServerEnabled"));

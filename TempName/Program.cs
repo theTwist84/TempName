@@ -34,74 +34,47 @@ namespace TempName
                         int numPlayers = HostJSON.numPlayers;
                         int maxPlayers = HostJSON.maxPlayers;
                         dynamic PlayerList = HostJSON.players;
-
-                        if (HostJSON_.Contains("passworded"))
-                            Settings.IsPassworded = true;
-
+                        
                         if (Settings.IsUsingName_Server.Equals(true)) {
                             if (ServerName.Contains(Settings.ServerName)) {
                                 if (numPlayers.Equals(0))
                                     Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})\n{4}", Host, ServerName, numPlayers, maxPlayers, Errors.NoPlayersFoundMessage));
-                                else if (Settings.IsPassworded.Equals(true)) {
+                                else if (HostJSON_.Contains("passworded"))
                                     Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})\n{4}", Host, ServerName, numPlayers, maxPlayers, Errors.PasswordServerMessage));
+                                else
+                                {
+                                    if (numPlayers.Equals(maxPlayers))
+                                        Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})\n{4}", Host, ServerName, numPlayers, maxPlayers, Errors.FullServerMessage));
+                                    else
+                                        Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})", Host, ServerName, numPlayers, maxPlayers));
 
-                                    Settings.IsPassworded = false;
-                                }
-                                else if(numPlayers.Equals(maxPlayers)) {
-                                    Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})\n{4}", Host, ServerName, numPlayers, maxPlayers, Errors.FullServerMessage));
-                                    
                                     for (int i = 0; i < numPlayers; i++) {
                                         dynamic Player = PlayerList[i];
 
-                                        if (Player.name == null && Player.uid == null)
+                                        if (Player.name == null && (Player.uid == null))
                                             Helpers.Output(text, String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
                                         else
-                                            Helpers.Output(text, String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
-                                    }
-                                }
-                                else {
-                                    Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})", Host, ServerName, numPlayers, maxPlayers));
-                                    
-                                    for (int i = 0; i < numPlayers; i++) {
-                                        dynamic Player = PlayerList[i];
-
-                                        if (Player.name == null && Player.uid == null) 
-                                            Helpers.Output(text, String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
-                                        else 
                                             Helpers.Output(text, String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
                                     }
                                 }
                                 Helpers.Output(text, Environment.NewLine);
                             }
                         }
-                        else
-                        {
+                        else {
                             if (numPlayers.Equals(0))
                                 Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})\n{4}", Host, ServerName, numPlayers, maxPlayers, Errors.NoPlayersFoundMessage));
-                            else if (Settings.IsPassworded.Equals(true)) {
+                            else if (HostJSON_.Contains("passworded"))
                                 Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})\n{4}", Host, ServerName, numPlayers, maxPlayers, Errors.PasswordServerMessage));
-
-                                Settings.IsPassworded = false;
-                            }
-                            else if (numPlayers.Equals(maxPlayers)) {
-                                Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})\n{4}", Host, ServerName, numPlayers, maxPlayers, Errors.FullServerMessage));
-
-                                for (int i = 0; i < numPlayers; i++) {
-                                    dynamic Player = PlayerList[i];
-
-                                    if (Player.name == null && Player.uid == null)
-                                        Helpers.Output(text, String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
-                                    else
-                                        Helpers.Output(text, String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
-                                }
-                            }
                             else {
-                                Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})", Host, ServerName, numPlayers, maxPlayers));
+                                if (numPlayers.Equals(maxPlayers))
+                                    Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})\n{4}", Host, ServerName, numPlayers, maxPlayers, Errors.FullServerMessage));
+                                else
+                                    Helpers.Output(text, String.Format("IP: {0} Host: {1} Players ({2}/{3})", Host, ServerName, numPlayers, maxPlayers));
 
                                 for (int i = 0; i < numPlayers; i++) {
                                     dynamic Player = PlayerList[i];
 
-                                    if (Player.name == null && Player.uid == null)
+                                    if (Player.name == null && (Player.uid == null))
                                         Helpers.Output(text, String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
                                     else
                                         Helpers.Output(text, String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
