@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 using Newtonsoft.Json;
@@ -67,57 +66,69 @@ namespace TempName
 
         private void PlayerSelection()
         {
-            if (Server_Name.SelectedIndex == 0)
+            try
             {
-                UUID.Items.Clear();
-                Player_Name.Items.Clear();
-                foreach (var item in Players_List)
-                    Player_Name.Items.Add(item.ToString());
-                foreach (var item in UID_List)
-                    UUID.Items.Add(item.ToString());
-            }
-            else if (Convert.ToInt32(Player_Count.SelectedItem) == 0)
-            {
-                UUID.Items.Clear();
-                Player_Name.Items.Clear();
-            }
-            else
-            {
-                int count = Server_Name.SelectedIndex;
-                if (count > 0)
+                if (Server_Name.SelectedIndex == 0)
                 {
-                    int firstindex = 0;
-
-                    for (int i = 1; i < count; i++)
-                    {
-                        firstindex += Convert.ToInt32(Player_Count.Items[i]);
-                    }
-
                     UUID.Items.Clear();
                     Player_Name.Items.Clear();
 
-                    foreach (var item in Players_List.GetRange(firstindex, Convert.ToInt32(Player_Count.SelectedItem)))
+                    foreach (var item in Players_List)
                         Player_Name.Items.Add(item.ToString());
-                    foreach (var item in UID_List.GetRange(firstindex, Convert.ToInt32(Player_Count.SelectedItem)))
+
+                    foreach (var item in UID_List)
                         UUID.Items.Add(item.ToString());
+                }
+                else if (Convert.ToInt32(Player_Count.SelectedItem) == 0)
+                {
+                    UUID.Items.Clear();
+                    Player_Name.Items.Clear();
                 }
                 else
                 {
-                    UUID.Items.Clear();
-                    Player_Name.Items.Clear();
-                }
+                    int count = Server_Name.SelectedIndex;
+                    if (count > 0)
+                    {
+                        int firstindex = 0;
 
+                        for (int i = 1; i < count; i++)
+                            firstindex += Convert.ToInt32(Player_Count.Items[i]);
+
+                        UUID.Items.Clear();
+                        Player_Name.Items.Clear();
+
+                        foreach (var item in Players_List.GetRange(firstindex, Convert.ToInt32
+                            (Player_Count.SelectedItem)))
+                            Player_Name.Items.Add(item.ToString());
+                        foreach (var item in UID_List.GetRange(firstindex, Convert.ToInt32
+                            (Player_Count.SelectedItem)))
+                            UUID.Items.Add(item.ToString());
+                    }
+                    else
+                    {
+                        UUID.Items.Clear();
+                        Player_Name.Items.Clear();
+                    }
+                }
             }
+            catch (Exception) { }
         }
 
         private static void UpdateSettings()
         {
-            TempName.SettingsForm.IsDEBUG = bool.Parse(TempName.SettingsForm.GetSetting("IsDEBUG"));
-            TempName.SettingsForm.TimeOut = int.Parse(TempName.SettingsForm.GetSetting("TimeOut"));
-            TempName.SettingsForm.IsUsingLog = bool.Parse(TempName.SettingsForm.GetSetting("LogEnabled"));
-            TempName.SettingsForm.Log = string.Format("{0}\\{1}", Directory.GetCurrentDirectory(), TempName.SettingsForm.GetSetting("LogName"));
-            TempName.SettingsForm.IsUsingName_Server = bool.Parse(TempName.SettingsForm.GetSetting("LookForServerEnabled"));
-            TempName.SettingsForm.ServerName = TempName.SettingsForm.GetSetting("ServerName");
+            TempName.SettingsForm.IsDEBUG = 
+                bool.Parse(TempName.SettingsForm.GetSetting("IsDEBUG"));
+            TempName.SettingsForm.TimeOut = 
+                int.Parse(TempName.SettingsForm.GetSetting("TimeOut"));
+            TempName.SettingsForm.IsUsingLog = 
+                bool.Parse(TempName.SettingsForm.GetSetting("LogEnabled"));
+            TempName.SettingsForm.Log = string.Format("{0}\\{1}", 
+                Directory.GetCurrentDirectory(), 
+                TempName.SettingsForm.GetSetting("LogName"));
+            TempName.SettingsForm.IsUsingName_Server = 
+                bool.Parse(TempName.SettingsForm.GetSetting("LookForServerEnabled"));
+            TempName.SettingsForm.ServerName = 
+                TempName.SettingsForm.GetSetting("ServerName");
         }
 
         private void CheckServers_Click(object sender, EventArgs e)
@@ -126,9 +137,12 @@ namespace TempName
 
             UpdateSettings();
 
-            var Log = new StringBuilder();
-            var players = new StringBuilder();
-            var uids = new StringBuilder();
+            var Log = 
+                new StringBuilder();
+            var players = 
+                new StringBuilder();
+            var uids = 
+                new StringBuilder();
 
             IP_Address.Items.Clear();
             Server_Name.Items.Clear();
@@ -141,20 +155,29 @@ namespace TempName
 
             try
             {
-                string ServerList_ = TempName.SettingsForm.wc.DownloadString(TempName.SettingsForm.MasterServer);
-                dynamic ServerList = JsonConvert.DeserializeObject(ServerList_);
+                string ServerList_ = 
+                    TempName.SettingsForm.wc.DownloadString(TempName.SettingsForm.MasterServer);
+                dynamic ServerList = 
+                    JsonConvert.DeserializeObject(ServerList_);
                 
                 foreach (string Host in ServerList.result.servers)
                 {
                     try
                     {
-                        string HostJSON_ = TempName.SettingsForm.wc.DownloadString(String.Format("http://{0}", Host));
-                        dynamic HostJSON = JsonConvert.DeserializeObject(HostJSON_);
-                        string hostPlayer = HostJSON.hostPlayer;
-                        string ServerName = HostJSON.name;
-                        int numPlayers = HostJSON.numPlayers;
-                        int maxPlayers = HostJSON.maxPlayers;
-                        dynamic PlayerList = HostJSON.players;
+                        string HostJSON_ = 
+                            TempName.SettingsForm.wc.DownloadString(String.Format("http://{0}", Host));
+                        dynamic HostJSON = 
+                            JsonConvert.DeserializeObject(HostJSON_);
+                        string hostPlayer = 
+                            HostJSON.hostPlayer;
+                        string ServerName = 
+                            HostJSON.name;
+                        int numPlayers = 
+                            HostJSON.numPlayers;
+                        int maxPlayers = 
+                            HostJSON.maxPlayers;
+                        dynamic PlayerList = 
+                            HostJSON.players;
 
                         if (TempName.SettingsForm.IsUsingName_Server.Equals(true))
                         {
@@ -162,7 +185,9 @@ namespace TempName
                             {
                                 IP_Address.Items.Add(Host);
                                 Server_Name.Items.Add(ServerName);
-                                Log.AppendLine(String.Format("IP: {0} Host: {1}", Host, ServerName));
+                                Log.AppendLine(String.Format("IP: {0} Host: {1}", 
+                                    Host, 
+                                    ServerName));
 
                                 if (numPlayers.Equals(0))
                                 {
@@ -196,19 +221,24 @@ namespace TempName
                                     {
                                         for (int i = 0; i < numPlayers; i++)
                                         {
-                                            dynamic Player = PlayerList[i];
+                                            dynamic Player = 
+                                                PlayerList[i];
 
                                             if (Player.name == null && Player.uid == null)
                                             {
                                                 Player_Name.Items.Add(Errors.PlayerHasNoNameMessage);
                                                 UUID.Items.Add(Errors.PlayerHasNoUIDMessage);
-                                                Log.AppendLine(String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
+                                                Log.AppendLine(String.Format("{0} or {1}", 
+                                                    Errors.PlayerHasNoNameMessage, 
+                                                    Errors.PlayerHasNoUIDMessage));
                                             }
                                             else
                                             {
                                                 this.Player_Name.Items.Add(Player.name);
                                                 this.UUID.Items.Add(Player.uid);
-                                                Log.AppendLine(String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
+                                                Log.AppendLine(String.Format("UID: {1} Name: {0}", 
+                                                    Player.name, 
+                                                    Player.uid));
                                             }
                                         }
                                         Player_Count.Items.Add(numPlayers.ToString());
@@ -217,19 +247,24 @@ namespace TempName
                                     {
                                         for (int i = 0; i < numPlayers; i++)
                                         {
-                                            dynamic Player = PlayerList[i];
+                                            dynamic Player = 
+                                                PlayerList[i];
 
                                             if (Player.name == null && Player.uid == null)
                                             {
                                                 Player_Name.Items.Add(Errors.PlayerHasNoNameMessage);
                                                 UUID.Items.Add(Errors.PlayerHasNoUIDMessage);
-                                                Log.AppendLine(String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
+                                                Log.AppendLine(String.Format("{0} or {1}", 
+                                                    Errors.PlayerHasNoNameMessage, 
+                                                    Errors.PlayerHasNoUIDMessage));
                                             }
                                             else
                                             {
                                                 this.Player_Name.Items.Add(Player.name);
                                                 this.UUID.Items.Add(Player.uid);
-                                                Log.AppendLine(String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
+                                                Log.AppendLine(String.Format("UID: {1} Name: {0}", 
+                                                    Player.name, 
+                                                    Player.uid));
                                             }
                                         }
                                         Player_Count.Items.Add(numPlayers.ToString());
@@ -242,7 +277,9 @@ namespace TempName
                         {
                             IP_Address.Items.Add(Host);
                             Server_Name.Items.Add(ServerName);
-                            Log.AppendLine(String.Format("IP: {0} Host: {1}", Host, ServerName));
+                            Log.AppendLine(String.Format("IP: {0} Host: {1}", 
+                                Host, 
+                                ServerName));
 
                             if (numPlayers.Equals(0))
                             {
@@ -276,19 +313,24 @@ namespace TempName
                                 {
                                     for (int i = 0; i < numPlayers; i++)
                                     {
-                                        dynamic Player = PlayerList[i];
+                                        dynamic Player = 
+                                            PlayerList[i];
 
                                         if (Player.name == null && Player.uid == null)
                                         {
                                             Player_Name.Items.Add(Errors.PlayerHasNoNameMessage);
                                             UUID.Items.Add(Errors.PlayerHasNoUIDMessage);
-                                            Log.AppendLine(String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
+                                            Log.AppendLine(String.Format("{0} or {1}", 
+                                                Errors.PlayerHasNoNameMessage, 
+                                                Errors.PlayerHasNoUIDMessage));
                                         }
                                         else
                                         {
                                             this.Player_Name.Items.Add(Player.name);
                                             this.UUID.Items.Add(Player.uid);
-                                            Log.AppendLine(String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
+                                            Log.AppendLine(String.Format("UID: {1} Name: {0}", 
+                                                Player.name, 
+                                                Player.uid));
                                         }
                                     }
                                     Player_Count.Items.Add(numPlayers.ToString());
@@ -297,19 +339,24 @@ namespace TempName
                                 {
                                     for (int i = 0; i < numPlayers; i++)
                                     {
-                                        dynamic Player = PlayerList[i];
+                                        dynamic Player = 
+                                            PlayerList[i];
 
                                         if (Player.name == null && Player.uid == null)
                                         {
                                             Player_Name.Items.Add(Errors.PlayerHasNoNameMessage);
                                             UUID.Items.Add(Errors.PlayerHasNoUIDMessage);
-                                            Log.AppendLine(String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
+                                            Log.AppendLine(String.Format("{0} or {1}", 
+                                                Errors.PlayerHasNoNameMessage, 
+                                                Errors.PlayerHasNoUIDMessage));
                                         }
                                         else
                                         {
                                             this.Player_Name.Items.Add(Player.name);
                                             this.UUID.Items.Add(Player.uid);
-                                            Log.AppendLine(String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
+                                            Log.AppendLine(String.Format("UID: {1} Name: {0}", 
+                                                Player.name, 
+                                                Player.uid));
                                         }
                                     }
                                     Player_Count.Items.Add(numPlayers.ToString());
@@ -326,8 +373,12 @@ namespace TempName
                                 break;
 
                             case false:
-                                label2.Text = (Errors.HostNotConnetMessage + Environment.NewLine);
-                                Log.AppendLine(Errors.HostNotConnetMessage + Environment.NewLine);
+                                label2.Text = (String.Format("{1}{0}", 
+                                    Errors.HostNotConnetMessage,
+                                    Environment.NewLine));
+                                Log.AppendLine(String.Format("{1}{0}",
+                                    Errors.HostNotConnetMessage,
+                                    Environment.NewLine));
                                 break;
                         }
                     }
@@ -341,7 +392,8 @@ namespace TempName
                         break;
 
                     case false:
-                        label2.Text = (Errors.MasterServerNotConnetMessage);
+                        label2.Text = 
+                            (Errors.MasterServerNotConnetMessage);
                         break;
                 }
             }
@@ -353,10 +405,15 @@ namespace TempName
 
             foreach (var item in Player_Name.Items)
                 players.AppendLine(item.ToString());
+
             foreach (var item in UUID.Items)
                 uids.AppendLine(item.ToString());
-            string playerstr = players.ToString();
-            string uidstr = uids.ToString();
+
+            string playerstr = 
+                players.ToString();
+            string uidstr = 
+                uids.ToString();
+
             using (StringReader reader = new StringReader(playerstr))
             {
                 string line;
@@ -365,6 +422,7 @@ namespace TempName
                     Players_List.Add(line);
                 }
             }
+
             using (StringReader reader = new StringReader(uidstr))
             {
                 string line;
@@ -373,7 +431,8 @@ namespace TempName
                     UID_List.Add(line);
                 }
             }
-            label2.Text = ("Complete");
+            label2.Text = 
+                ("Complete");
 
             if (Loop_checkBox.Checked)
             {
@@ -386,14 +445,15 @@ namespace TempName
         {
             var form = Application.OpenForms.OfType<Settings_Form>().FirstOrDefault();
             if (form != null)
-            {
                 form.Activate();
-            }
             else
             {
-                Settings_Form Form_Settings = new Settings_Form();
-                Form_Settings.StartPosition = FormStartPosition.Manual;
-                Form_Settings.Location = new Point(Location.X, Location.Y - (Form_Settings.Size.Height + 5));
+                Settings_Form Form_Settings = 
+                    new Settings_Form();
+                Form_Settings.StartPosition = 
+                    FormStartPosition.Manual;
+                Form_Settings.Location = 
+                    new Point(Location.X, Location.Y - (Form_Settings.Size.Height + 5));
                 Form_Settings.Show();
             }
         }
@@ -405,7 +465,8 @@ namespace TempName
 
         private void Minimise_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Minimized;
+            this.WindowState = 
+                FormWindowState.Minimized;
         }
 
         private void move_MouseDown(object sender, MouseEventArgs e)
