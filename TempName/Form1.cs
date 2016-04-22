@@ -193,15 +193,15 @@ namespace TempName
                                 {
                                     label2.Text = (Errors.NoPlayersFoundMessage);
                                     Log.AppendLine(Errors.NoPlayersFoundMessage);
-                                    Player_Count.Items.Add(numPlayers.ToString());
+                                    Player_Count.Items.Add(0);
                                 }
                                 else if (HostJSON_.Contains("passworded"))
                                 {
                                     label2.Text = (Errors.PasswordServerMessage);
                                     Log.AppendLine(Errors.PasswordServerMessage);
                                     Player_Count.Items.Add(numPlayers.ToString());
-                                    
-                                    for (int i = 0; i > numPlayers; i++)
+
+                                    for (int i = 0; i < numPlayers; i++)
                                     {
                                         if (i == 0)
                                         {
@@ -210,7 +210,7 @@ namespace TempName
                                         }
                                         else
                                         {
-                                            Player_Name.Items.Add("PasswordedPlayer");
+                                            Player_Name.Items.Add("Player - Unknown");
                                             UUID.Items.Add("0000000000000000");
                                         }
                                     }
@@ -285,7 +285,7 @@ namespace TempName
                             {
                                 label2.Text = (Errors.NoPlayersFoundMessage);
                                 Log.AppendLine(Errors.NoPlayersFoundMessage);
-                                Player_Count.Items.Add(numPlayers.ToString());
+                                Player_Count.Items.Add(0);
                             }
                             else if (HostJSON_.Contains("passworded"))
                             {
@@ -293,7 +293,7 @@ namespace TempName
                                 Log.AppendLine(Errors.PasswordServerMessage);
                                 Player_Count.Items.Add(numPlayers.ToString());
 
-                                for (int i = 0; i > numPlayers; i++)
+                                for (int i = 0; i < numPlayers; i++)
                                 {
                                     if (i == 0)
                                     {
@@ -302,7 +302,7 @@ namespace TempName
                                     }
                                     else
                                     {
-                                        Player_Name.Items.Add("PasswordedPlayer");
+                                        Player_Name.Items.Add("Player - Unknown");
                                         UUID.Items.Add("0000000000000000");
                                     }
                                 }

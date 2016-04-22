@@ -1,0 +1,11 @@
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\obj\Debug\TempName.csprojResolveAssemblyReference.cache
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\obj\Debug\TempName.MainForm.resources
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\obj\Debug\TempName.csproj.GenerateResource.Cache
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\bin\Debug\TempName.exe
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\bin\Debug\TempName.pdb
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\bin\Debug\Newtonsoft.Json.dll
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\bin\Debug\Newtonsoft.Json.xml
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\obj\Debug\TempName.exe
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\obj\Debug\TempName.pdb
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\obj\Debug\TempName.Properties.Resources.resources
+C:\Users\OJHit\Documents\Visual Studio 2015\Projects\TempName\TempName\obj\Debug\TempName.Settings_Form.resources
