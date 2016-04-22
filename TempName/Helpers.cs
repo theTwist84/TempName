@@ -15,14 +15,14 @@ namespace TempName
             {
                 Thread.Sleep(1000);
             }
-            Console.Clear();
+            //Console.Clear();
 
             if (SettingsForm.TimeOut != 0)
                 for (int i = SettingsForm.TimeOut * 1; i > 0; i--)
                 {
-                    Console.WriteLine("Waiting {0} seconds!", i);
+                    //Console.WriteLine("Waiting {0} seconds!", i);
                     Thread.Sleep(1000);
-                    Console.Clear();
+                    //Console.Clear();
                 }
         }
 

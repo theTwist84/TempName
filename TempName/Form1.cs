@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 using Newtonsoft.Json;
@@ -121,6 +122,8 @@ namespace TempName
 
         private void CheckServers_Click(object sender, EventArgs e)
         {
+            StartCheck:
+
             UpdateSettings();
 
             var Log = new StringBuilder();
@@ -147,6 +150,7 @@ namespace TempName
                     {
                         string HostJSON_ = TempName.SettingsForm.wc.DownloadString(String.Format("http://{0}", Host));
                         dynamic HostJSON = JsonConvert.DeserializeObject(HostJSON_);
+                        string hostPlayer = HostJSON.hostPlayer;
                         string ServerName = HostJSON.name;
                         int numPlayers = HostJSON.numPlayers;
                         int maxPlayers = HostJSON.maxPlayers;
@@ -158,6 +162,7 @@ namespace TempName
                             {
                                 IP_Address.Items.Add(Host);
                                 Server_Name.Items.Add(ServerName);
+                                Log.AppendLine(String.Format("IP: {0} Host: {1}", Host, ServerName));
 
                                 if (numPlayers.Equals(0))
                                 {
@@ -170,6 +175,20 @@ namespace TempName
                                     label2.Text = (Errors.PasswordServerMessage);
                                     Log.AppendLine(Errors.PasswordServerMessage);
                                     Player_Count.Items.Add(numPlayers.ToString());
+                                    
+                                    for (int i = 0; i > numPlayers; i++)
+                                    {
+                                        if (i == 0)
+                                        {
+                                            Player_Name.Items.Add(hostPlayer);
+                                            UUID.Items.Add("0000000000000000");
+                                        }
+                                        else
+                                        {
+                                            Player_Name.Items.Add("PasswordedPlayer");
+                                            UUID.Items.Add("0000000000000000");
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -183,11 +202,13 @@ namespace TempName
                                             {
                                                 Player_Name.Items.Add(Errors.PlayerHasNoNameMessage);
                                                 UUID.Items.Add(Errors.PlayerHasNoUIDMessage);
+                                                Log.AppendLine(String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
                                             }
                                             else
                                             {
                                                 this.Player_Name.Items.Add(Player.name);
                                                 this.UUID.Items.Add(Player.uid);
+                                                Log.AppendLine(String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
                                             }
                                         }
                                         Player_Count.Items.Add(numPlayers.ToString());
@@ -202,11 +223,13 @@ namespace TempName
                                             {
                                                 Player_Name.Items.Add(Errors.PlayerHasNoNameMessage);
                                                 UUID.Items.Add(Errors.PlayerHasNoUIDMessage);
+                                                Log.AppendLine(String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
                                             }
                                             else
                                             {
                                                 this.Player_Name.Items.Add(Player.name);
                                                 this.UUID.Items.Add(Player.uid);
+                                                Log.AppendLine(String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
                                             }
                                         }
                                         Player_Count.Items.Add(numPlayers.ToString());
@@ -219,16 +242,33 @@ namespace TempName
                         {
                             IP_Address.Items.Add(Host);
                             Server_Name.Items.Add(ServerName);
+                            Log.AppendLine(String.Format("IP: {0} Host: {1}", Host, ServerName));
 
                             if (numPlayers.Equals(0))
                             {
                                 label2.Text = (Errors.NoPlayersFoundMessage);
+                                Log.AppendLine(Errors.NoPlayersFoundMessage);
                                 Player_Count.Items.Add(numPlayers.ToString());
                             }
                             else if (HostJSON_.Contains("passworded"))
                             {
                                 label2.Text = (Errors.PasswordServerMessage);
+                                Log.AppendLine(Errors.PasswordServerMessage);
                                 Player_Count.Items.Add(numPlayers.ToString());
+
+                                for (int i = 0; i > numPlayers; i++)
+                                {
+                                    if (i == 0)
+                                    {
+                                        Player_Name.Items.Add(hostPlayer);
+                                        UUID.Items.Add("0000000000000000");
+                                    }
+                                    else
+                                    {
+                                        Player_Name.Items.Add("PasswordedPlayer");
+                                        UUID.Items.Add("0000000000000000");
+                                    }
+                                }
                             }
                             else
                             {
@@ -242,11 +282,13 @@ namespace TempName
                                         {
                                             Player_Name.Items.Add(Errors.PlayerHasNoNameMessage);
                                             UUID.Items.Add(Errors.PlayerHasNoUIDMessage);
+                                            Log.AppendLine(String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
                                         }
                                         else
                                         {
                                             this.Player_Name.Items.Add(Player.name);
                                             this.UUID.Items.Add(Player.uid);
+                                            Log.AppendLine(String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
                                         }
                                     }
                                     Player_Count.Items.Add(numPlayers.ToString());
@@ -261,11 +303,13 @@ namespace TempName
                                         {
                                             Player_Name.Items.Add(Errors.PlayerHasNoNameMessage);
                                             UUID.Items.Add(Errors.PlayerHasNoUIDMessage);
+                                            Log.AppendLine(String.Format("{0} or {1}", Errors.PlayerHasNoNameMessage, Errors.PlayerHasNoUIDMessage));
                                         }
                                         else
                                         {
                                             this.Player_Name.Items.Add(Player.name);
                                             this.UUID.Items.Add(Player.uid);
+                                            Log.AppendLine(String.Format("UID: {1} Name: {0}", Player.name, Player.uid));
                                         }
                                     }
                                     Player_Count.Items.Add(numPlayers.ToString());
@@ -283,6 +327,7 @@ namespace TempName
 
                             case false:
                                 label2.Text = (Errors.HostNotConnetMessage + Environment.NewLine);
+                                Log.AppendLine(Errors.HostNotConnetMessage + Environment.NewLine);
                                 break;
                         }
                     }
@@ -300,6 +345,12 @@ namespace TempName
                         break;
                 }
             }
+            finally
+            {
+                Logger.Log(Log.ToString());
+                Log.Clear();
+            }
+
             foreach (var item in Player_Name.Items)
                 players.AppendLine(item.ToString());
             foreach (var item in UUID.Items)
@@ -323,6 +374,12 @@ namespace TempName
                 }
             }
             label2.Text = ("Complete");
+
+            if (Loop_checkBox.Checked)
+            {
+                Helpers.Sleep();
+                goto StartCheck;
+            }
         }
 
         private void Settings_Click(object sender, EventArgs e)

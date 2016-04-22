@@ -50,6 +50,7 @@ namespace TempName
             this.Settings = new System.Windows.Forms.Button();
             this.Player_Count = new System.Windows.Forms.ListBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.Loop_checkBox = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -260,12 +261,24 @@ namespace TempName
             this.label7.TabIndex = 17;
             this.label7.Text = "Player count";
             // 
+            // Loop_checkBox
+            // 
+            this.Loop_checkBox.AutoSize = true;
+            this.Loop_checkBox.Enabled = false;
+            this.Loop_checkBox.Location = new System.Drawing.Point(677, 432);
+            this.Loop_checkBox.Name = "Loop_checkBox";
+            this.Loop_checkBox.Size = new System.Drawing.Size(50, 18);
+            this.Loop_checkBox.TabIndex = 18;
+            this.Loop_checkBox.Text = "Loop";
+            this.Loop_checkBox.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.ClientSize = new System.Drawing.Size(1004, 469);
+            this.Controls.Add(this.Loop_checkBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.Player_Count);
             this.Controls.Add(this.Settings);
@@ -322,5 +335,6 @@ namespace TempName
         private System.Windows.Forms.Button Settings;
         private System.Windows.Forms.ListBox Player_Count;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox Loop_checkBox;
     }
 }
